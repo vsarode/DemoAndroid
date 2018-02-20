@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-public class Prakingground extends AppCompatActivity  implements View.OnClickListener {
+public class ParkingGround extends AppCompatActivity  implements View.OnClickListener {
     Button ground1;
     Button ground2;
 
