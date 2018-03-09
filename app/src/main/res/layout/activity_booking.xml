@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.ab.myapplication.BookASlotActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="451dp">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="87dp"
+                    android:layout_height="20dp"
+                    android:text="Start Time:"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="103dp" />
+
+                <TimePicker
+                    android:id="@+id/tpStart"
+                    android:layout_width="258dp"
+                    android:layout_height="wrap_content"
+                    android:timePickerMode="spinner"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="122dp"
+                    tools:layout_editor_absoluteY="2dp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="88dp"
+                    android:layout_height="20dp"
+                    android:text="End Time:"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="298dp" />
+
+                <TimePicker
+                    android:id="@+id/tpEnd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="188dp"
+                    android:timePickerMode="spinner"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteX="124dp"
+                    tools:layout_editor_absoluteY="214dp" />
+
+            </TableRow>
+
+        </TableLayout>
+
+        <Button
+            android:id="@+id/bt_confirm_booking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Confirm Booking" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

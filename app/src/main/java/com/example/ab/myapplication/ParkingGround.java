@@ -1,16 +1,13 @@
 package com.example.ab.myapplication;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-public class ParkingGround extends AppCompatActivity  implements View.OnClickListener {
+public class ParkingGround extends AppCompatActivity implements View.OnClickListener {
     Button ground1;
     Button ground2;
 
@@ -30,7 +27,7 @@ public class ParkingGround extends AppCompatActivity  implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(this,Parkingslots.class);
+        Intent intent = new Intent(this, ParkingSlots.class);
         startActivity(intent);
     }
 }

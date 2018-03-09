@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private View mLoginFormView;
     private Context myContext;
     Button mEmailSignInButton;
+    Boolean byPassLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
 
     private void attemptLogin() {
+        if (byPassLogin) {
+            moveToNextActivity();
+        }
         if (mAuthTask != null) {
             return;
         }
-
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
@@ -102,11 +105,15 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             JSONObject userObj = new JSONObject(user);
             String name = userObj.getString("name");
             String emai = userObj.getString("email");
-            User myUser = User.createUser(name,emai);
+            User myUser = User.createUser(name, emai);
         } catch (JSONException e) {
             System.out.println("Failed to parse User Object");
         }
 
+        moveToNextActivity();
+    }
+
+    private void moveToNextActivity() {
         this.clearFileds();
         Intent intent = new Intent(this, ParkingGround.class);
         startActivity(intent);

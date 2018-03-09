@@ -51,7 +51,7 @@ public class UserSignUp extends AsyncTask<Void, Void, Boolean> {
             JsonObjectRequest request = new JsonObjectRequest(url, new JSONObject(paramsBody), listener, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    System.out.println("Error while signUp request.************"+error.toString());
+                    System.out.println("Error while signUp request.************" + error.toString());
                 }
             });
             requestQueue.add(request);

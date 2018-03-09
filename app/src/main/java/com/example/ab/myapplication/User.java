@@ -8,7 +8,7 @@ public class User {
     private User() {
     }
 
-    public User getCurrentUser() {
+    public static User getCurrentUser() {
         if (currentUser == null) {
             System.out.println("User is not yet Logged In");
             return null;
