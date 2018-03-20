@@ -40,18 +40,10 @@ public class BookASlotActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         Toast.makeText(this, "Booking your slot..", Toast.LENGTH_SHORT).show();
-        Date startDate = new Date();
-
-        startDate.setHours(startTimePicker.getHour());
-        startDate.setMinutes(startTimePicker.getMinute());
-
-        Date endDate = new Date();
-
-        endDate.setHours(endTimePicker.getHour());
-        endDate.setMinutes(endTimePicker.getMinute());
-        startDate.getTime();
+        int start = startTimePicker.getHour();
+        int end = startTimePicker.getMinute();
         try {
-            new BookingTask(selectedSlotId, this, new Response.Listener() {
+            new BookingTask(selectedSlotId,start,end, this, new Response.Listener() {
                 @Override
                 public void onResponse(Object response) {
                     try {

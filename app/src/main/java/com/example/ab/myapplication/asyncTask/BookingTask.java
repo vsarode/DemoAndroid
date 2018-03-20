@@ -22,7 +22,7 @@ public class BookingTask extends AsyncTask<Void, Void, Boolean> {
     private Response.Listener successListener;
     boolean result = false;
 
-    public BookingTask(String blockId, Context contex, Response.Listener successListener) {
+    public BookingTask(String blockId, int startTime, int endTime, Context contex, Response.Listener successListener) {
         this.blockId = blockId;
         this.contex = contex;
         this.successListener = successListener;
