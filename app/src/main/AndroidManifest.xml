@@ -36,8 +36,11 @@
             android:name=".ParkingSlots"
             android:label="@string/title_activity_parkingslots"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BookASlotActivity" />
-        <activity android:name=".SlotBookingInfo"></activity>
+        <activity android:name=".SlotBookingInfo" />
+        <activity
+            android:name=".Book"
+            android:label="@string/title_activity_book"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
