@@ -1,5 +1,6 @@
 package com.example.ab.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.example.ab.myapplication.asyncTask.AllBlocksInfo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +25,12 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
     Button[] slotButtons = new Button[9];
     Button bookSlotButton, viewSlotInfoButton;
     Button selectedSlot;
-    Map<Button, String> buttonBlockIdMap = new HashMap<>();
+    Map<Button, String> buttonBlockToIdMap = new HashMap<>();
+    Map<String, Button> buttonIdToBlockMap = new HashMap<>();
     public static String SLOT_ID = "slot_id";
+    int selectedColor = Color.GRAY;
+    int bookedColor = Color.YELLOW;
+    int defaultColor = Color.GREEN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +48,42 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
         initializeSLots();
         setOnClickListener();
         initializeBlockMap();
+        initializeBlockBookings();
+    }
+
+    private void initializeBlockBookings() {
+        final Context myContext = this;
+        try {
+            new AllBlocksInfo(myContext, new Response.Listener() {
+                @Override
+                public void onResponse(Object response) {
+                    try {
+                        System.out.println("----------------" + response.toString());
+                        JSONArray parkingBlocks = new JSONObject(response.toString()).getJSONObject("responseData").getJSONArray("parkingBlocks");
+                        for (int i = 0; i < parkingBlocks.length(); i++) {
+                            JSONObject block = parkingBlocks.getJSONObject(i);
+                            boolean isFree = block.getBoolean("isFree");
+                            String blockId = block.getString("blockCode");
+                            Button blockBtn = buttonIdToBlockMap.get(blockId);
+                            if (!isFree) {
+                                blockBtn.setBackgroundColor(Color.YELLOW);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(myContext, "Failed to parse response", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initializeBlockMap() {
         for (int i = 0; i < slotButtons.length; i++) {
-            buttonBlockIdMap.put(slotButtons[i], "" + i);
+            buttonBlockToIdMap.put(slotButtons[i], "B" + i);
+            buttonIdToBlockMap.put("B" + i, slotButtons[i]);
+            slotButtons[i].setBackgroundColor(defaultColor);
         }
     }
 
@@ -69,10 +112,10 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
             return;
         }
         if (selectedSlot != null) {
-            selectedSlot.setBackgroundColor(Color.YELLOW);
+            selectedSlot.setBackgroundColor(defaultColor);
         }
         selectedSlot = (Button) view;
-        selectedSlot.setBackgroundColor(Color.GRAY);
+        selectedSlot.setBackgroundColor(selectedColor);
     }
 
     private void showNoSelectionMessage() {
@@ -80,7 +123,7 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
     }
 
     private void handleBooking() {
-        startNewActivity(BookASlotActivity.class);
+        startNewActivity(Book.class);
     }
 
     private void handleViewDetails() {
@@ -88,7 +131,7 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startNewActivity(Class nextActivity) {
-        String slotSelected = buttonBlockIdMap.get(selectedSlot);
+        String slotSelected = buttonBlockToIdMap.get(selectedSlot);
         Intent intent = new Intent(this, nextActivity);
         intent.putExtra(SLOT_ID, slotSelected);
         startActivity(intent);

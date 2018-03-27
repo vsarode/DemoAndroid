@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private View mLoginFormView;
     private Context myContext;
     Button mEmailSignInButton;
-    Boolean byPassLogin = true;
+    Boolean byPassLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +83,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     try {
                         JSONObject loginResponse = new JSONObject(response.toString());
                         if (loginResponse.getBoolean("status")) {
-                            System.out.println("SuccessFully Logged In");
-                            Object res = loginResponse.get("responseData");
-                            String user = ((JSONObject) res).get("user").toString();
+                            JSONObject user = loginResponse.getJSONObject("responseData").getJSONObject("user");
                             thisActivity.handleSuccess(user);
                         } else {
                             System.out.println("Failed to Login");
@@ -101,12 +99,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         }
     }
 
-    private void handleSuccess(String user) {
+    private void handleSuccess(JSONObject user) {
         try {
-            JSONObject userObj = new JSONObject(user);
-            String name = userObj.getString("name");
-            String emai = userObj.getString("email");
-            User myUser = User.createUser(name, emai);
+            String name = user.getString("name");
+            String email = user.getString("email");
+            User.createUser(email,name);
+            System.out.println("---------------------"+user.toString());
         } catch (JSONException e) {
             System.out.println("Failed to parse User Object");
         }
