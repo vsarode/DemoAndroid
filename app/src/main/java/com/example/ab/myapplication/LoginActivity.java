@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,7 +27,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private View mLoginFormView;
     private Context myContext;
     Button mEmailSignInButton;
-    Boolean byPassLogin = false;
+    Boolean byPassLogin = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +102,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         try {
             String name = user.getString("name");
             String email = user.getString("email");
-            User.createUser(email,name);
-            System.out.println("---------------------"+user.toString());
+            User.createUser(email, name);
+            System.out.println("---------------------" + user.toString());
         } catch (JSONException e) {
             System.out.println("Failed to parse User Object");
         }

@@ -1,12 +1,18 @@
 package com.example.ab.myapplication;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,9 +28,14 @@ import org.json.JSONObject;
 
 public class Book extends AppCompatActivity implements View.OnClickListener {
 
+    public static final int REQUEST_CODE = 1;
     TimePicker startTimePicker, endTimePicker;
     Button confirmBooking;
     String selectedSlotId;
+
+    static double lattitude;
+    static double longitude;
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +48,22 @@ public class Book extends AppCompatActivity implements View.OnClickListener {
         selectedSlotId = getIntent().getStringExtra(ParkingSlots.SLOT_ID);
         startTimePicker.setIs24HourView(true);
         endTimePicker.setIs24HourView(true);
+        locationManager = (LocationManager) getSystemService(getApplicationContext().LOCATION_SERVICE);
+        getLocation();
+    }
+
+    private void getLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+        } else {
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if (location != null) {
+                lattitude = location.getLatitude();
+                longitude = location.getLongitude();
+            } else {
+                Toast.makeText(this, "Couldn't fetch location, sorry", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -85,15 +112,18 @@ public class Book extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void NavigateToDestination() {
-
-        String dlattitude = "18.591395";
-        String dlongitude = "74.00380333333332";
-
-        String slattitude = "18.591395";
-        String slongitude = "74.00380333333332";
-
+        String dlattitude = "18.520430";
+        String dlongitude = "73.856744";
+        Double slattitude = lattitude;
+        Double slongitude = longitude;
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" + "saddr=" + slattitude + "," + slongitude + "&daddr=" + dlattitude + "," + dlongitude));
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        getLocation();
     }
 }

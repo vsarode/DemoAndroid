@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ParkingSlots extends AppCompatActivity implements View.OnClickListener {
-
     Button[] slotButtons = new Button[4];
     Button bookSlotButton, viewSlotInfoButton;
     Button selectedSlot;
@@ -29,8 +28,9 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
     Map<String, Button> buttonIdToBlockMap = new HashMap<>();
     public static String SLOT_ID = "slot_id";
     int selectedColor = Color.GRAY;
-    int bookedColor = Color.YELLOW;
     int defaultColor = Color.GREEN;
+    int colorBooked = Color.YELLOW;
+    Map<Button, Boolean> buttonFreeStatus = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,16 +58,15 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onResponse(Object response) {
                     try {
-                        System.out.println("----------------" + response.toString());
                         JSONArray parkingBlocks = new JSONObject(response.toString()).getJSONObject("responseData").getJSONArray("parkingBlocks");
                         for (int i = 0; i < parkingBlocks.length(); i++) {
                             JSONObject block = parkingBlocks.getJSONObject(i);
                             boolean isFree = block.getBoolean("isFree");
                             String blockId = block.getString("blockCode");
                             Button blockBtn = buttonIdToBlockMap.get(blockId);
-                            System.out.println("Block ID ****************8 "+blockId);
-                            if (!isFree) {
-//                                blockBtn.setBackgroundColor(Color.YELLOW);
+                            buttonFreeStatus.put(blockBtn, isFree);
+                            if (!isFree && blockBtn != null) {
+                                blockBtn.setBackgroundColor(colorBooked);
                             }
                         }
                     } catch (JSONException e) {
@@ -113,7 +112,12 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
             return;
         }
         if (selectedSlot != null) {
-            selectedSlot.setBackgroundColor(defaultColor);
+            boolean isFree = buttonFreeStatus.get(selectedSlot);
+            if (isFree) {
+                selectedSlot.setBackgroundColor(defaultColor);
+            } else {
+                selectedSlot.setBackgroundColor(colorBooked);
+            }
         }
         selectedSlot = (Button) view;
         selectedSlot.setBackgroundColor(selectedColor);
