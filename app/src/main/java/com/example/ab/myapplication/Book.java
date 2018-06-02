@@ -45,8 +45,8 @@ public class Book extends AppCompatActivity implements View.OnClickListener {
         Toast.makeText(this, "Booking your slot..", Toast.LENGTH_SHORT).show();
         int startHour = startTimePicker.getHour();
         int startMin = startTimePicker.getMinute();
-        int endHour = startTimePicker.getHour();
-        int endMin = startTimePicker.getMinute();
+        int endHour = endTimePicker.getHour();
+        int endMin = endTimePicker.getMinute();
         final Context myContext = this;
         try {
             new BookingTask(selectedSlotId, startHour, endHour, startMin, endMin, this, new Response.Listener() {
@@ -86,11 +86,11 @@ public class Book extends AppCompatActivity implements View.OnClickListener {
 
     private void NavigateToDestination() {
 
-        String dlattitude = "18.520430";
-        String dlongitude = "73.856744";
+        String dlattitude = "18.591395";
+        String dlongitude = "74.00380333333332";
 
-        String slattitude = "17.902781";
-        String slongitude = "74.081415";
+        String slattitude = "18.591395";
+        String slongitude = "74.00380333333332";
 
         final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?" + "saddr=" + slattitude + "," + slongitude + "&daddr=" + dlattitude + "," + dlongitude));
         intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");

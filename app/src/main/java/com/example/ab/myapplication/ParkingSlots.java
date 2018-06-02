@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class ParkingSlots extends AppCompatActivity implements View.OnClickListener {
 
-    Button[] slotButtons = new Button[9];
+    Button[] slotButtons = new Button[4];
     Button bookSlotButton, viewSlotInfoButton;
     Button selectedSlot;
     Map<Button, String> buttonBlockToIdMap = new HashMap<>();
@@ -65,8 +65,9 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
                             boolean isFree = block.getBoolean("isFree");
                             String blockId = block.getString("blockCode");
                             Button blockBtn = buttonIdToBlockMap.get(blockId);
+                            System.out.println("Block ID ****************8 "+blockId);
                             if (!isFree) {
-                                blockBtn.setBackgroundColor(Color.YELLOW);
+//                                blockBtn.setBackgroundColor(Color.YELLOW);
                             }
                         }
                     } catch (JSONException e) {
@@ -142,10 +143,6 @@ public class ParkingSlots extends AppCompatActivity implements View.OnClickListe
         slotButtons[1] = (Button) findViewById(R.id.bt2);
         slotButtons[2] = (Button) findViewById(R.id.bt3);
         slotButtons[3] = (Button) findViewById(R.id.bt4);
-        slotButtons[4] = (Button) findViewById(R.id.bt5);
-        slotButtons[5] = (Button) findViewById(R.id.bt6);
-        slotButtons[6] = (Button) findViewById(R.id.bt7);
-        slotButtons[7] = (Button) findViewById(R.id.bt8);
-        slotButtons[8] = (Button) findViewById(R.id.bt9);
+
     }
 }
